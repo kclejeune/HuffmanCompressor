@@ -10,8 +10,8 @@ public class FileParser
     {
         HashMap<Character, Integer> frequencyTable = new HashMap<>();
         File file = new File(filePath);
+        
         Scanner scan = new Scanner(file);
-        StringBuilder build = new StringBuilder();
         while(scan.hasNextLine())
         {
             char[] temp = scan.nextLine().toCharArray();
