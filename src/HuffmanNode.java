@@ -4,11 +4,14 @@ public class HuffmanNode implements Comparable<HuffmanNode>
 {
     private final Character inChar;
     private final Integer frequency;
+    private HuffmanNode rightChild;
+    private HuffmanNode leftChild;
     
     public HuffmanNode(Map.Entry<Character, Integer> entry)
     {
         inChar = entry.getKey();
         frequency = entry.getValue();
+        rightChild = leftChild = null;
     }
     
     public Character getInChar()
@@ -37,5 +40,11 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     public int compareTo(HuffmanNode node)
     {
         return frequency.compareTo(node.getFrequency());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "[Character = " + getInChar() + ", " + "Frequency = " + getFrequency() + "]";
     }
 }

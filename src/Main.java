@@ -1,5 +1,5 @@
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 public class Main
 {
@@ -7,9 +7,9 @@ public class Main
     {
         try
         {
-            LinkedHashMap<Character, Integer> map = FileParser.toFrequencyTable
-                    ("/Users/kennanlejeune/Documents/IdeaProjects" +
-                            "/HuffmanCompressor/src/Gadsby.txt");
+            ArrayList<HuffmanNode> nodes = FileParser.toHuffmanHeap("/Users/kennanlejeune/Documents/IdeaProjects" +
+                    "/HuffmanCompressor/src/Gadsby.txt");
+            System.out.println(nodes);
             
         }
         catch(IOException e)
