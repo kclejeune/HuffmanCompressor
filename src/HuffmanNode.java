@@ -1,12 +1,24 @@
-public class HuffmanNode implements Comparable<Integer>
+import java.util.Map;
+
+public class HuffmanNode implements Comparable<HuffmanNode>
 {
     private final Character inChar;
     private final Integer frequency;
     
-    public HuffmanNode(Character inChar, Integer frequency)
+    public HuffmanNode(Map.Entry<Character, Integer> entry)
     {
-        this.inChar = inChar;
-        this.frequency = frequency;
+        inChar = entry.getKey();
+        frequency = entry.getValue();
+    }
+    
+    public Character getInChar()
+    {
+        return inChar;
+    }
+    
+    public Integer getFrequency()
+    {
+        return frequency;
     }
     
     /**
@@ -14,7 +26,7 @@ public class HuffmanNode implements Comparable<Integer>
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.
      *
-     * @param value the object to be compared.
+     * @param node the object to be compared.
      * @return a negative integer, zero, or a positive integer as this object
      * is less than, equal to, or greater than the specified object.
      * @throws NullPointerException if the specified object is null
@@ -22,8 +34,8 @@ public class HuffmanNode implements Comparable<Integer>
      *                              from being compared to this object.
      */
     @Override
-    public int compareTo(Integer value)
+    public int compareTo(HuffmanNode node)
     {
-        return frequency.compareTo(value);
+        return frequency.compareTo(node.getFrequency());
     }
 }

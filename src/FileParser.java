@@ -38,4 +38,17 @@ public class FileParser
         return frequencyTable;
     }
     
+    public static ArrayList<HuffmanNode> toHuffmanHeap(String filePath) throws IOException
+    {
+        LinkedHashMap<Character, Integer> frequencyTable = toFrequencyTable(filePath);
+        ArrayList<HuffmanNode> huffmanHeap = new ArrayList<>();
+        for(Map.Entry<Character, Integer> entry : frequencyTable.entrySet())
+        {
+            huffmanHeap.add(new HuffmanNode(entry));
+        }
+        
+        Collections.sort(huffmanHeap);
+        
+        return huffmanHeap;
+    }
 }
