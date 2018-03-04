@@ -8,7 +8,6 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     {
         this.inChar = inChar;
         this.frequency = frequency;
-        this.parent = parent;
         this.leftChild = leftChild;
         
         this.rightChild = rightChild;
@@ -17,7 +16,6 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     private Integer frequency;
     private HuffmanNode rightChild;
     private HuffmanNode leftChild;
-    private HuffmanNode parent;
     
     public boolean isLeafNode()
     {
@@ -52,16 +50,6 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     public void setLeftChild(HuffmanNode leftChild)
     {
         this.leftChild = leftChild;
-    }
-    
-    public HuffmanNode getParent()
-    {
-        return parent;
-    }
-    
-    public void setParent(HuffmanNode parent)
-    {
-        this.parent = parent;
     }
     
     /**

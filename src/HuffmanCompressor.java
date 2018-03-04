@@ -31,8 +31,9 @@ public class HuffmanCompressor
             }
             else
             {
-                heap.add(0, HuffmanNode.mergeNodes(heap.remove(0), heap.remove(0)));
+                heap.add(0, HuffmanNode.mergeNodes(heap.remove(1), heap.remove(0)));
             }
+            Collections.sort(heap);
         }
         
         return heap;
