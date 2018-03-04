@@ -2,11 +2,26 @@ import java.util.Map;
 
 public class HuffmanNode implements Comparable<HuffmanNode>
 {
-    private final Character inChar;
-    private final Integer frequency;
+    private Character inChar;
+    
+    public HuffmanNode(Character inChar, Integer frequency, HuffmanNode leftChild, HuffmanNode rightChild)
+    {
+        this.inChar = inChar;
+        this.frequency = frequency;
+        this.leftChild = leftChild;
+        
+        this.rightChild = rightChild;
+    }
+    
+    private Integer frequency;
     private HuffmanNode rightChild;
     private HuffmanNode leftChild;
     
+    /**
+     * Special constructor to parse HuffmanNodes from LinkedHashMap entries
+     *
+     * @param entry an entry from a HashMap to be parsed
+     */
     public HuffmanNode(Map.Entry<Character, Integer> entry)
     {
         inChar = entry.getKey();
@@ -14,9 +29,19 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         rightChild = leftChild = null;
     }
     
+    /**
+     * Return the character at this node or null if none exists
+     *
+     * @return the character held by this node
+     */
     public Character getInChar()
     {
         return inChar;
+    }
+    
+    public static HuffmanNode mergeNodes(HuffmanNode left, HuffmanNode right)
+    {
+        return new HuffmanNode(null, (left.getFrequency() + right.getFrequency()), left, right);
     }
     
     public Integer getFrequency()
@@ -42,9 +67,14 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         return frequency.compareTo(node.getFrequency());
     }
     
+    /**
+     * Generate a string representation of the node in the form [char, frequency]
+     *
+     * @return the string representation of this node
+     */
     @Override
     public String toString()
     {
-        return "[Character = " + getInChar() + ", " + "Frequency = " + getFrequency() + "]";
+        return "[" + getInChar() + " = " + getFrequency() + "]";
     }
 }

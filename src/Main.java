@@ -10,7 +10,6 @@ public class Main
             ArrayList<HuffmanNode> nodes = FileParser.toHuffmanHeap("/Users/kennanlejeune/Documents/IdeaProjects" +
                     "/HuffmanCompressor/src/Gadsby.txt");
             System.out.println(nodes);
-            
         }
         catch(IOException e)
         {

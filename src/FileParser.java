@@ -7,41 +7,41 @@ public class FileParser
     File gadsby = new File("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanEncoder/src/Gadsby.txt");
     
     /**
-     * Parse relative character frequencies to a LinkedHashMap
+     * Parses a given input file to a sorted ArrayList of HuffmanNodes
      *
-     * @param filePath the filepath of the file to be parsed
-     * @return a Linked HashMap containing [Character, Frequency] pair
-     * @throws IOException when the file does not exist
+     * @param filePath the file to be converted to Huffman frequencies
+     * @return the ArrayList of HuffmanNodes containing Characters and their respective frequencies in the file
+     * @throws IOException if the file is nonexistent
      */
-    public static LinkedHashMap<Character, Integer> toFrequencyTable(String filePath) throws IOException
+    public static ArrayList<HuffmanNode> toHuffmanHeap(String filePath) throws IOException
     {
-        LinkedHashMap<Character, Integer> frequencyTable = new LinkedHashMap<>();
+        HashMap<Character, Integer> frequencyTable = new HashMap<>();
         File file = new File(filePath);
         
         Scanner scan = new Scanner(file);
+    
+        //create a frequency table of characters using a HashMap
         while(scan.hasNextLine())
         {
             char[] temp = scan.nextLine().toCharArray();
             for(char element : temp)
             {
+                //add 1 to the key if this is the first occurrence of the character
                 if(!frequencyTable.containsKey(element))
                 {
                     frequencyTable.put(element, 1);
                 }
                 else
                 {
+                    //otherwise add one to the existing value
                     frequencyTable.put(element, frequencyTable.get(element) + 1);
                 }
             }
         }
-        
-        return frequencyTable;
-    }
     
-    public static ArrayList<HuffmanNode> toHuffmanHeap(String filePath) throws IOException
-    {
-        LinkedHashMap<Character, Integer> frequencyTable = toFrequencyTable(filePath);
+        //create an ArrayList of HuffmanNodes, sorted to act as a heap
         ArrayList<HuffmanNode> huffmanHeap = new ArrayList<>();
+    
         for(Map.Entry<Character, Integer> entry : frequencyTable.entrySet())
         {
             huffmanHeap.add(new HuffmanNode(entry));
