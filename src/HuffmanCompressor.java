@@ -21,6 +21,23 @@ public class HuffmanCompressor
         }
     }
     
+    public static ArrayList<HuffmanNode> toHuffmanTree(ArrayList<HuffmanNode> heap)
+    {
+        while(heap.size() > 1)
+        {
+            if(heap.get(0).getFrequency() < heap.get(1).getFrequency())
+            {
+                heap.add(0, HuffmanNode.mergeNodes(heap.remove(0), heap.remove(0)));
+            }
+            else
+            {
+                heap.add(0, HuffmanNode.mergeNodes(heap.remove(0), heap.remove(0)));
+            }
+        }
+        
+        return heap;
+    }
+    
     /**
      * Parses a given input file to a sorted ArrayList of HuffmanNodes
      *
