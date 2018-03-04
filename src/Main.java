@@ -1,5 +1,5 @@
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Main
 {
@@ -7,10 +7,10 @@ public class Main
     {
         try
         {
-            HashMap<Character, Integer> map = FileParser.toFrequencyTable
+            LinkedHashMap<Character, Integer> map = FileParser.toFrequencyTable
                     ("/Users/kennanlejeune/Documents/IdeaProjects" +
                             "/HuffmanCompressor/src/Gadsby.txt");
-            System.out.println(map);
+            
         }
         catch(IOException e)
         {
