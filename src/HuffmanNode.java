@@ -17,6 +17,41 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     private HuffmanNode rightChild;
     private HuffmanNode leftChild;
     
+    public boolean isLeafNode()
+    {
+        return getInChar() != null;
+    }
+    
+    public boolean hasRightChild()
+    {
+        return getRightChild() != null;
+    }
+    
+    public boolean hasLeftChild()
+    {
+        return getFrequency() != null;
+    }
+    
+    public HuffmanNode getRightChild()
+    {
+        return rightChild;
+    }
+    
+    public void setRightChild(HuffmanNode rightChild)
+    {
+        this.rightChild = rightChild;
+    }
+    
+    public HuffmanNode getLeftChild()
+    {
+        return leftChild;
+    }
+    
+    public void setLeftChild(HuffmanNode leftChild)
+    {
+        this.leftChild = leftChild;
+    }
+    
     /**
      * Special constructor to parse HuffmanNodes from LinkedHashMap entries
      *

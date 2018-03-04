@@ -1,10 +1,25 @@
 import java.io.*;
 import java.util.*;
 
-public class FileParser
+public class HuffmanCompressor
 {
-    File dictionary = new File("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanEncoder/src/Dictionary.txt");
-    File gadsby = new File("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanEncoder/src/Gadsby.txt");
+    public static void main(String[] args)
+    {
+        String inputFile = args[0];
+        String encodingFile = args[1];
+        String outputFile = args[2];
+        try
+        {
+            ArrayList<HuffmanNode> nodes = toHuffmanHeap("/Users/kennanlejeune/Documents/IdeaProjects" +
+                    "/HuffmanCompressor/src/Gadby.txt");
+            System.out.println(nodes);
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getClass());
+            System.out.println(e.getMessage());
+        }
+    }
     
     /**
      * Parses a given input file to a sorted ArrayList of HuffmanNodes
@@ -19,7 +34,7 @@ public class FileParser
         File file = new File(filePath);
         
         Scanner scan = new Scanner(file);
-    
+        
         //create a frequency table of characters using a HashMap
         while(scan.hasNextLine())
         {
@@ -38,10 +53,10 @@ public class FileParser
                 }
             }
         }
-    
+        
         //create an ArrayList of HuffmanNodes, sorted to act as a heap
         ArrayList<HuffmanNode> huffmanHeap = new ArrayList<>();
-    
+        
         for(Map.Entry<Character, Integer> entry : frequencyTable.entrySet())
         {
             huffmanHeap.add(new HuffmanNode(entry));
