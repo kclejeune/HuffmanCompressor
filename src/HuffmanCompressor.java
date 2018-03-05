@@ -5,26 +5,51 @@ public class HuffmanCompressor
 {
     public static void main(String[] args)
     {
+        ArrayList<HuffmanNode> tree = new ArrayList<>();
+        tree.add(new HuffmanNode('Z', 2));
+        tree.add(new HuffmanNode('K', 7));
+        tree.add(new HuffmanNode('M', 24));
+        tree.add(new HuffmanNode('C', 32));
+        tree.add(new HuffmanNode('U', 37));
+        tree.add(new HuffmanNode('D', 42));
+        tree.add(new HuffmanNode('L', 42));
+        tree.add(new HuffmanNode('E', 120));
+    
         try
         {
-            HuffmanTree huffmanTree = makeTree(args[0]);
-            System.out.println(huffmanTree.toEncodingTable());
+    
+            System.out.println(makeTree(tree).toEncodingTable());
         }
-        catch(IOException err)
+        catch(Exception e)
         {
-            System.out.println(err.getMessage());
         }
     }
     
-    private static HuffmanTree makeTree(String filePath) throws IOException
+    /**
+     * Form a HuffmanTree based on respective character frequencies
+     *
+     * @param filePath the file to be queried
+     * @return the Huffman Tree which represents characters in the file at the input file path
+     * @throws IOException if the file does not exist
+     */
+    public static HuffmanTree makeTree(String filePath) throws IOException
     {
-        ArrayList<HuffmanNode> heap = toHuffmanHeap(filePath);
+        return makeTree(toHuffmanHeap(filePath));
+    }
+    
+    /**
+     * @param heap
+     * @return
+     * @throws IOException
+     */
+    private static HuffmanTree makeTree(ArrayList<HuffmanNode> heap) throws IOException
+    {
         while(heap.size() > 1)
         {
             heap.add(0, HuffmanNode.mergeNodes(heap.remove(0), heap.remove(0)));
             Collections.sort(heap);
         }
-    
+        
         return new HuffmanTree(heap.get(0));
     }
     
