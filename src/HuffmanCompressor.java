@@ -5,38 +5,47 @@ public class HuffmanCompressor
 {
     public static void main(String[] args)
     {
-        String inputFile = args[0];
-        String encodingFile = args[1];
-        String outputFile = args[2];
-        try
+        ArrayList<HuffmanNode> tree = new ArrayList<>();
+    
+        HuffmanNode root = toHuffmanTree(tree);
+    
+        HashMap<Character, String> encodingTree = new HashMap<>();
+        toEncodingTable(encodingTree, root, "");
+    
+        System.out.println(encodingTree);
+    }
+    
+    public static void toEncodingTable(HashMap<Character, String> encodingTable, HuffmanNode root, String encoding)
+    {
+        if(root == null)
         {
-            ArrayList<HuffmanNode> nodes = toHuffmanHeap("/Users/kennanlejeune/Documents/IdeaProjects" +
-                    "/HuffmanCompressor/src/Gadby.txt");
-            System.out.println(nodes);
+            return;
         }
-        catch(IOException e)
+        if(root.isLeafNode())
         {
-            System.out.println(e.getClass());
-            System.out.println(e.getMessage());
+            encodingTable.put(root.getInChar(), encoding);
+        }
+        else
+        {
+            toEncodingTable(encodingTable, root.getRightChild(), encoding + "1");
+            
+            toEncodingTable(encodingTable, root.getLeftChild(), encoding + "0");
         }
     }
     
-    public static ArrayList<HuffmanNode> toHuffmanTree(ArrayList<HuffmanNode> heap)
+    /**
+     * @param heap
+     * @return
+     */
+    private static HuffmanNode toHuffmanTree(ArrayList<HuffmanNode> heap)
     {
         while(heap.size() > 1)
         {
-            if(heap.get(0).getFrequency() < heap.get(1).getFrequency())
-            {
-                heap.add(0, HuffmanNode.mergeNodes(heap.remove(0), heap.remove(0)));
-            }
-            else
-            {
-                heap.add(0, HuffmanNode.mergeNodes(heap.remove(1), heap.remove(0)));
-            }
+            heap.add(0, HuffmanNode.mergeNodes(heap.remove(0), heap.remove(0)));
             Collections.sort(heap);
         }
-        
-        return heap;
+    
+        return heap.get(0);
     }
     
     /**
@@ -46,7 +55,7 @@ public class HuffmanCompressor
      * @return the ArrayList of HuffmanNodes containing Characters and their respective frequencies in the file
      * @throws IOException if the file is nonexistent
      */
-    public static ArrayList<HuffmanNode> toHuffmanHeap(String filePath) throws IOException
+    private static ArrayList<HuffmanNode> toHuffmanHeap(String filePath) throws IOException
     {
         HashMap<Character, Integer> frequencyTable = new HashMap<>();
         File file = new File(filePath);
@@ -71,6 +80,7 @@ public class HuffmanCompressor
                 }
             }
         }
+        scan.close();
         
         //create an ArrayList of HuffmanNodes, sorted to act as a heap
         ArrayList<HuffmanNode> huffmanHeap = new ArrayList<>();

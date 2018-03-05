@@ -112,4 +112,13 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     {
         return "[" + getInChar() + " = " + getFrequency() + "]";
     }
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof HuffmanNode &&
+                ((HuffmanNode) obj).getFrequency().equals(getFrequency()) && ((HuffmanNode) obj).getInChar().equals
+                (getInChar());
+    }
+    
 }
