@@ -2,7 +2,7 @@ import java.util.Map;
 
 public class HuffmanNode implements Comparable<HuffmanNode>
 {
-    private Character inChar;
+    private final Character inChar;
     
     /**
      * Special constructor to parse HuffmanNodes from LinkedHashMap entries
@@ -16,13 +16,6 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         rightChild = leftChild = null;
     }
     
-    public HuffmanNode(Character inChar, Integer frequency)
-    {
-        this.inChar = inChar;
-        this.frequency = frequency;
-        leftChild = rightChild = null;
-    }
-    
     public HuffmanNode(Character inChar, Integer frequency, HuffmanNode leftChild, HuffmanNode rightChild)
     {
         this.inChar = inChar;
@@ -32,23 +25,13 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         this.rightChild = rightChild;
     }
     
-    private Integer frequency;
-    private HuffmanNode rightChild;
-    private HuffmanNode leftChild;
+    private final Integer frequency;
+    private final HuffmanNode rightChild;
+    private final HuffmanNode leftChild;
     
     public boolean isLeafNode()
     {
         return getInChar() != null;
-    }
-    
-    public boolean hasRightChild()
-    {
-        return getRightChild() != null;
-    }
-    
-    public boolean hasLeftChild()
-    {
-        return getFrequency() != null;
     }
     
     public HuffmanNode getRightChild()
@@ -56,19 +39,9 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         return rightChild;
     }
     
-    public void setRightChild(HuffmanNode rightChild)
-    {
-        this.rightChild = rightChild;
-    }
-    
     public HuffmanNode getLeftChild()
     {
         return leftChild;
-    }
-    
-    public void setLeftChild(HuffmanNode leftChild)
-    {
-        this.leftChild = leftChild;
     }
     
     /**

@@ -30,7 +30,7 @@ public class HuffmanTree
         {
             return;
         }
-        //leaf nodes contain characters
+        //leaf nodes
         if(root.isLeafNode())
         {
             encodingTable.put(root.getInChar(), encoding);

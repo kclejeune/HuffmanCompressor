@@ -75,7 +75,7 @@ public class HuffmanCompressor
      * @return
      * @throws IOException
      */
-    private static HuffmanTree makeTree(ArrayList<HuffmanNode> heap) throws IOException
+    private static HuffmanTree makeTree(ArrayList<HuffmanNode> heap)
     {
         while(heap.size() > 1)
         {
