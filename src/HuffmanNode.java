@@ -4,6 +4,25 @@ public class HuffmanNode implements Comparable<HuffmanNode>
 {
     private Character inChar;
     
+    /**
+     * Special constructor to parse HuffmanNodes from LinkedHashMap entries
+     *
+     * @param entry an entry from a HashMap to be parsed
+     */
+    public HuffmanNode(Map.Entry<Character, Integer> entry)
+    {
+        inChar = entry.getKey();
+        frequency = entry.getValue();
+        rightChild = leftChild = null;
+    }
+    
+    public HuffmanNode(Character inChar, Integer frequency)
+    {
+        this.inChar = inChar;
+        this.frequency = frequency;
+        leftChild = rightChild = null;
+    }
+    
     public HuffmanNode(Character inChar, Integer frequency, HuffmanNode leftChild, HuffmanNode rightChild)
     {
         this.inChar = inChar;
@@ -50,18 +69,6 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     public void setLeftChild(HuffmanNode leftChild)
     {
         this.leftChild = leftChild;
-    }
-    
-    /**
-     * Special constructor to parse HuffmanNodes from LinkedHashMap entries
-     *
-     * @param entry an entry from a HashMap to be parsed
-     */
-    public HuffmanNode(Map.Entry<Character, Integer> entry)
-    {
-        inChar = entry.getKey();
-        frequency = entry.getValue();
-        rightChild = leftChild = null;
     }
     
     /**
@@ -120,5 +127,4 @@ public class HuffmanNode implements Comparable<HuffmanNode>
                 ((HuffmanNode) obj).getFrequency().equals(getFrequency()) && ((HuffmanNode) obj).getInChar().equals
                 (getInChar());
     }
-    
 }

@@ -5,47 +5,27 @@ public class HuffmanCompressor
 {
     public static void main(String[] args)
     {
-        ArrayList<HuffmanNode> tree = new ArrayList<>();
-    
-        HuffmanNode root = toHuffmanTree(tree);
-    
-        HashMap<Character, String> encodingTree = new HashMap<>();
-        toEncodingTable(encodingTree, root, "");
-    
-        System.out.println(encodingTree);
-    }
-    
-    public static void toEncodingTable(HashMap<Character, String> encodingTable, HuffmanNode root, String encoding)
-    {
-        if(root == null)
+        try
         {
-            return;
+            HuffmanTree huffmanTree = makeTree(args[0]);
+            System.out.println(huffmanTree.toEncodingTable());
         }
-        if(root.isLeafNode())
+        catch(IOException err)
         {
-            encodingTable.put(root.getInChar(), encoding);
-        }
-        else
-        {
-            toEncodingTable(encodingTable, root.getRightChild(), encoding + "1");
-            
-            toEncodingTable(encodingTable, root.getLeftChild(), encoding + "0");
+            System.out.println(err.getMessage());
         }
     }
     
-    /**
-     * @param heap
-     * @return
-     */
-    private static HuffmanNode toHuffmanTree(ArrayList<HuffmanNode> heap)
+    private static HuffmanTree makeTree(String filePath) throws IOException
     {
+        ArrayList<HuffmanNode> heap = toHuffmanHeap(filePath);
         while(heap.size() > 1)
         {
             heap.add(0, HuffmanNode.mergeNodes(heap.remove(0), heap.remove(0)));
             Collections.sort(heap);
         }
     
-        return heap.get(0);
+        return new HuffmanTree(heap.get(0));
     }
     
     /**
