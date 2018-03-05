@@ -5,24 +5,57 @@ public class HuffmanCompressor
 {
     public static void main(String[] args)
     {
-        ArrayList<HuffmanNode> tree = new ArrayList<>();
-        tree.add(new HuffmanNode('Z', 2));
-        tree.add(new HuffmanNode('K', 7));
-        tree.add(new HuffmanNode('M', 24));
-        tree.add(new HuffmanNode('C', 32));
-        tree.add(new HuffmanNode('U', 37));
-        tree.add(new HuffmanNode('D', 42));
-        tree.add(new HuffmanNode('L', 42));
-        tree.add(new HuffmanNode('E', 120));
+        String gadsby = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Gadsby.txt";
+        String dictionary = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Dictionary_rev.txt";
     
+        System.out.println("Gadsby compressed w/ Gadsby");
+        System.out.println(huffmanEncoder(gadsby, gadsby, "/Users/kennanlejeune/Documents/IdeaProjects" +
+                "/HuffmanCompressor/src/GadsbySelfCompressed.txt"));
+    
+        System.out.println("Gadsby compressed w/ Dictionary");
+        System.out.println(huffmanEncoder(gadsby, dictionary, "/Users/kennanlejeune/Documents/IdeaProjects" +
+                "/HuffmanCompressor/src/GadsbyDictionaryCompressed.txt"));
+    }
+    
+    public static String huffmanEncoder(String inputFileName, String encodingFileName, String outputFilename)
+    {
+        HashMap<Character, String> encodingTable;
+        int originalNumBits = 0;
+        int compressedNumBits = 0;
         try
         {
-    
-            System.out.println(makeTree(tree).toEncodingTable());
+            encodingTable = makeTree(encodingFileName).toEncodingTable();
         }
-        catch(Exception e)
+        catch(IOException e)
         {
+            return "Encoding Error";
         }
+        try
+        {
+            Scanner scan = new Scanner(new File(inputFileName));
+            FileWriter fileWriter = new FileWriter(outputFilename);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            while(scan.hasNextLine())
+            {
+                String nextLine = scan.nextLine();
+                for(Character c : nextLine.toCharArray())
+                {
+                    
+                    bufferedWriter.write(encodingTable.get(c));
+                    originalNumBits += 8;
+                    compressedNumBits += encodingTable.get(c).length();
+                }
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        }
+        catch(IOException e)
+        {
+            return "Input File Error";
+        }
+        
+        return "Successful Output: " + ((double) (originalNumBits - compressedNumBits) * 100 / originalNumBits) + "% " +
+                "savings";
     }
     
     /**

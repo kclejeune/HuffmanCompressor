@@ -25,10 +25,12 @@ public class HuffmanTree
     
     private void toEncodingTable(HashMap<Character, String> encodingTable, HuffmanNode root, String encoding)
     {
+        //base case - root is no longer in tree
         if(root == null)
         {
             return;
         }
+        //leaf nodes contain characters
         if(root.isLeafNode())
         {
             encodingTable.put(root.getInChar(), encoding);
