@@ -16,6 +16,14 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         rightChild = leftChild = null;
     }
     
+    /**
+     * Standard constructor to initialize values
+     *
+     * @param inChar     the character stored in this node
+     * @param frequency  the frequency of the character in a given file
+     * @param leftChild  the left child of this node
+     * @param rightChild the right child of this node
+     */
     public HuffmanNode(Character inChar, Integer frequency, HuffmanNode leftChild, HuffmanNode rightChild)
     {
         this.inChar = inChar;
@@ -29,16 +37,31 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     private final HuffmanNode rightChild;
     private final HuffmanNode leftChild;
     
+    /**
+     * Determine whether the node has children
+     *
+     * @return whether the node is a leaf node
+     */
     public boolean isLeafNode()
     {
         return getInChar() != null;
     }
     
+    /**
+     * Retrieve the node's right child
+     *
+     * @return the right child of this node
+     */
     public HuffmanNode getRightChild()
     {
         return rightChild;
     }
     
+    /**
+     * Retrieve the node's left child
+     *
+     * @return the left child of this node
+     */
     public HuffmanNode getLeftChild()
     {
         return leftChild;
@@ -54,11 +77,24 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         return inChar;
     }
     
+    /**
+     * Merge two nodes into one - combines the frequencies of two nodes into a new node, where the two nodes
+     * become the child nodes of the new root node
+     *
+     * @param left
+     * @param right
+     * @return
+     */
     public static HuffmanNode mergeNodes(HuffmanNode left, HuffmanNode right)
     {
         return new HuffmanNode(null, (left.getFrequency() + right.getFrequency()), left, right);
     }
     
+    /**
+     * Retrieve the frequency of this node
+     *
+     * @return the character frequency
+     */
     public Integer getFrequency()
     {
         return frequency;
@@ -93,6 +129,12 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         return "[" + getInChar() + " = " + getFrequency() + "]";
     }
     
+    /**
+     * Determine whether this node is equivalent to an input
+     *
+     * @param obj the object to be compared
+     * @return whether the object is a HuffmanNode and the frequencies and characters are equivalent
+     */
     @Override
     public boolean equals(Object obj)
     {

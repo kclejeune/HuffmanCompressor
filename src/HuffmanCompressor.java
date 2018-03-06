@@ -8,25 +8,26 @@ public class HuffmanCompressor
         String inputFile = args[0];
         String encodingFile = args[1];
         String outputFile = args[2];
-        huffmanEncoder(inputFile, encodingFile, outputFile);
+    
+        huffmanEncoder(args[0], args[1], args[2]);
     }
     
     /**
-     * Create a Huffman Encoded file
+     * Create a Huffman Encoded file based on an input file, an encoding file, and an output file
      *
-     * @param inputFileName
-     * @param encodingFileName
-     * @param outputFilename
-     * @return
+     * @param inputFile    the filepath of the file to be compressed
+     * @param encodingFile the filepath of the file for which huffman codes should be established
+     * @param outputFile   the filepath of the file to which the encoded file will be written
+     * @return the status of the file encoding
      */
-    public static String huffmanEncoder(String inputFileName, String encodingFileName, String outputFilename)
+    public static String huffmanEncoder(String inputFile, String encodingFile, String outputFile)
     {
         HashMap<Character, String> encodingTable;
         int originalNumBits = 0;
         int compressedNumBits = 0;
         try
         {
-            encodingTable = makeTree(encodingFileName).toEncodingTable();
+            encodingTable = makeTree(encodingFile).toEncodingTable();
         }
         catch(IOException e)
         {
@@ -34,8 +35,8 @@ public class HuffmanCompressor
         }
         try
         {
-            Scanner scan = new Scanner(new File(inputFileName));
-            FileWriter fileWriter = new FileWriter(outputFilename);
+            Scanner scan = new Scanner(new File(inputFile));
+            FileWriter fileWriter = new FileWriter(outputFile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             while(scan.hasNextLine())
             {
@@ -60,7 +61,50 @@ public class HuffmanCompressor
         }
         
         double relativeSize = ((double) compressedNumBits * 100 / originalNumBits);
-        return "Successful Output: " + relativeSize + "% of Original Size or " + (100 - relativeSize) + "% savings";
+        System.out.println((100 - relativeSize) + "% savings");
+        System.out.println(relativeSize + "% of Original Size)");
+    
+        return "Successful Output";
+    }
+    
+    public static String huffmanDecoder(String encodedFilePath, String encodingFile, String decodedFilePath)
+    {
+        try
+        {
+            HashMap<String, Character> decodingTable = new HashMap<>();
+            makeTree(encodingFile).toEncodingTable().forEach((key, value) -> decodingTable.put(value, key));
+            
+            File encodedFile = new File(encodedFilePath);
+            Scanner scan = new Scanner(encodedFile);
+            FileWriter fileWriter = new FileWriter(decodedFilePath);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            
+            while(scan.hasNextLine())
+            {
+                StringBuilder build = new StringBuilder();
+                for(Character c : scan.nextLine().toCharArray())
+                {
+                    build.append(c);
+                    if(decodingTable.containsKey(build.toString()))
+                    {
+                        bufferedWriter.write(decodingTable.get(build.toString()));
+                        build = new StringBuilder();
+                    }
+                }
+                bufferedWriter.newLine();
+            }
+            
+            bufferedWriter.close();
+            fileWriter.close();
+            scan.close();
+            System.out.println(decodedFilePath);
+            return "File Successfully Decoded";
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+            return "Encoding File Error";
+        }
     }
     
     /**
@@ -76,12 +120,14 @@ public class HuffmanCompressor
     }
     
     /**
+     * Creates a HuffmanTree of HuffmanNodes given
+     *
      * @param heap
      * @return
-     * @throws IOException
      */
     private static HuffmanTree makeTree(ArrayList<HuffmanNode> heap)
     {
+        System.out.println(heap);
         //merge the nodes until only the root node is remaining
         while(heap.size() > 1)
         {
