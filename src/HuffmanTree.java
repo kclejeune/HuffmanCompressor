@@ -63,11 +63,11 @@ public class HuffmanTree
         }
         else
         {
-            //encoding string adds a 1 if the child is along the right branch
-            toEncodingTable(encodingTable, root.getRightChild(), encoding + "1");
-            
             //encoding string adds a 0 if the child is along the left branch
             toEncodingTable(encodingTable, root.getLeftChild(), encoding + "0");
+    
+            //encoding string adds a 1 if the child is along the right branch
+            toEncodingTable(encodingTable, root.getRightChild(), encoding + "1");
         }
     }
 }

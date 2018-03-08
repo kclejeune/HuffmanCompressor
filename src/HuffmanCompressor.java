@@ -9,7 +9,11 @@ public class HuffmanCompressor
         String encodingFile = args[1];
         String outputFile = args[2];
     
-        huffmanEncoder(args[0], args[1], args[2]);
+        huffmanEncoder(inputFile, encodingFile, outputFile);
+    
+        huffmanDecoder(outputFile, encodingFile, "");
+        
+        
     }
     
     /**
