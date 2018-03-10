@@ -9,19 +9,22 @@ public class HuffmanCompressor
         String encodingFile = args[1];
         String outputFile = args[2];
     
-        String gadsby = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Gadsby.txt";
-        String dictionary = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Dictionary_rev.txt";
-        String gadsbySelfOut = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
-                "/GadsbySelfCompressed.txt";
-        String gadsbyDictionaryOut = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
-                "/GadsbyDictionaryCompressed.txt";
-        String gadsbySelfDecoded = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
-                "/GadsbySelfDecoded.txt";
-        String gadsbyDictionaryDecoded = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
-                "/GadsbyDictionaryDecoded.txt";
-        huffmanEncoder("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Test", "/Users" +
-                "/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Test", "/Users/kennanlejeune/Documents" +
-                "/IdeaProjects/HuffmanCompressor/src/TestEncoded");
+        try
+        {
+        
+            makeTree("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Gadsby" +
+                    ".txt").encodingTableToFile("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
+                    "/GadsbyEncoding.txt");
+            makeTree("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Dictionary_rev" +
+                    ".txt").encodingTableToFile("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
+                    "/DictionaryEncoding.txt");
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    
+        huffmanEncoder(inputFile, encodingFile, outputFile);
     }
     
     /**
@@ -56,6 +59,7 @@ public class HuffmanCompressor
                 for(Character c : nextLine.toCharArray())
                 {
                     //prevent NullPointerException in the instance of a lossy encoding file
+                    //will not affect lossless encoded files
                     if(encodingTable.containsKey(c))
                     {
                         bufferedWriter.write(encodingTable.get(c));
@@ -89,11 +93,7 @@ public class HuffmanCompressor
     {
         try
         {
-            HashMap<String, Character> decodingTable = new HashMap<>();
-            for(Map.Entry<Character, String> entry : makeTree(encodingFile).getEncodingTable().entrySet())
-            {
-                decodingTable.put(entry.getValue(), entry.getKey());
-            }
+            HashMap<String, Character> decodingTable = makeTree(encodingFile).getDecodingTable();
             
             File encodedFile = new File(encodedFilePath);
             Scanner scan = new Scanner(encodedFile);

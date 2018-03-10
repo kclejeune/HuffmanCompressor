@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+//TODO - Method commenting
 
 /**
  * A special case of a HuffmanNode when the Node the root of a Huffman tree
@@ -9,7 +10,9 @@ public class HuffmanTree
     //the root of the HuffmanTree
     private final HuffmanNode root;
     
-    private HashMap<Character, String> encodingTable;
+    private final HashMap<Character, String> encodingTable;
+    private final HashMap<String, Character> decodingTable;
+    
     private ArrayList<String> encodingList;
     
     /**
@@ -20,11 +23,29 @@ public class HuffmanTree
     public HuffmanTree(HuffmanNode root)
     {
         this.root = root;
+        encodingList = new ArrayList<>();
+        encodingTable = toEncodingTable();
+        decodingTable = toDecodingTable();
     }
     
+    /**
+     * Retrieve the encoding table for a given instance of a Huffman Tree
+     *
+     * @return the encoding values for each leaf node in the Huffman Tree
+     */
     public HashMap<Character, String> getEncodingTable()
     {
         return encodingTable;
+    }
+    
+    /**
+     * Retrieve the decoding table for a given instance of a Huffman Tree
+     *
+     * @return the decoding values for each leaf node in the Huffman Tree
+     */
+    public HashMap<String, Character> getDecodingTable()
+    {
+        return decodingTable;
     }
     
     /**
@@ -52,18 +73,29 @@ public class HuffmanTree
         return encodingTable;
     }
     
+    /**
+     * Create a formatted file of the leaf node character encodings
+     *
+     * @param filePath the path to write the file
+     * @return true unless the encoding fails
+     */
     public boolean encodingTableToFile(String filePath)
     {
         try
         {
             File file = new File(filePath);
+            if(!file.exists())
+            {
+                file.createNewFile();
+            }
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for(String anEncodingList : encodingList)
+            for(int i = 0; i < encodingList.size(); i++)
             {
-                bufferedWriter.write(anEncodingList);
-                bufferedWriter.newLine();
+                bufferedWriter.write(encodingList.get(i));
             }
+            bufferedWriter.close();
+            fileWriter.close();
             
             return true;
         }
@@ -93,6 +125,7 @@ public class HuffmanTree
         {
             //map the character to its respective encoding
             encodingTable.put(root.getInChar(), encoding);
+    
             encodingList.add(String.format("%s : %d : %s%n", root.getInChar(), root.getFrequency(), encoding));
         }
         else
@@ -103,5 +136,21 @@ public class HuffmanTree
             //encoding string adds a 1 if the child is along the right branch
             toEncodingTable(encodingTable, root.getRightChild(), encoding + "1");
         }
+    }
+    
+    /**
+     * Compute a decoding table given the encoding table of a Huffman Tree
+     *
+     * @return the table used to decode a Huffman Encoded file
+     */
+    private HashMap<String, Character> toDecodingTable()
+    {
+        HashMap<String, Character> decodingTable = new HashMap<>();
+        
+        //invert encodingTable values
+        getEncodingTable().forEach((key, value) -> decodingTable.put(value, key));
+        
+        //return the inverted map
+        return decodingTable;
     }
 }
