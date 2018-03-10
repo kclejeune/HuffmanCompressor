@@ -8,23 +8,27 @@ public class HuffmanCompressor
         String inputFile = args[0];
         String encodingFile = args[1];
         String outputFile = args[2];
-    
+        
+        /*
+        //encoding files generated with the following command:
         try
         {
-        
             makeTree("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Gadsby" +
-                    ".txt").encodingTableToFile("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
-                    "/GadsbyEncoding.txt");
+                    ".txt").encodingTableToFile
+                    ("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
+                            "/GadsbyEncoding.txt");
             makeTree("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Dictionary_rev" +
-                    ".txt").encodingTableToFile("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
-                    "/DictionaryEncoding.txt");
+                    ".txt").encodingTableToFile
+                    ("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
+                            "/DictionaryEncoding.txt");
         }
         catch(IOException e)
         {
             System.out.println(e.getMessage());
         }
+        */
     
-        huffmanEncoder(inputFile, encodingFile, outputFile);
+        System.out.println(huffmanEncoder(inputFile, encodingFile, outputFile));
     }
     
     /**
@@ -48,6 +52,7 @@ public class HuffmanCompressor
         {
             return "Encoding Error";
         }
+    
         try
         {
             Scanner scan = new Scanner(new File(inputFile));
@@ -62,17 +67,25 @@ public class HuffmanCompressor
                     //will not affect lossless encoded files
                     if(encodingTable.containsKey(c))
                     {
+                        //write the character's corresponding Huffman Code in place of the character
                         bufferedWriter.write(encodingTable.get(c));
+    
+                        //num bits of each compressed character value
                         compressedNumBits += encodingTable.get(c).length();
+    
+                        //original characters all 8 bits
                         originalNumBits += 8;
                     }
                 }
                 bufferedWriter.newLine();
             }
+            scan.close();
             bufferedWriter.close();
+            fileWriter.close();
         }
         catch(IOException e)
         {
+            e.printStackTrace();
             return "Input File Error";
         }
         
@@ -84,6 +97,8 @@ public class HuffmanCompressor
     }
     
     /**
+     * Decodes a Huffman Compressed file to a user specified output path using the compressed file and the encoded file
+     *
      * @param encodedFilePath the path of the file to be decoded
      * @param encodingFile    the path of the file used for encoding
      * @param decodedFilePath the path of the file after decoding
@@ -99,37 +114,42 @@ public class HuffmanCompressor
             Scanner scan = new Scanner(encodedFile);
             FileWriter fileWriter = new FileWriter(decodedFilePath);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            
+    
+            //traverse the entire file
             while(scan.hasNextLine())
             {
                 StringBuilder build = new StringBuilder();
                 for(Character c : scan.nextLine().toCharArray())
                 {
+                    //append values until the prefix matches a valid encoding
                     build.append(c);
+    
+                    //once the prefix matches
                     if(decodingTable.containsKey(build.toString()))
                     {
+                        //write the decoded value to the output file
                         bufferedWriter.write(decodingTable.get(build.toString()));
-                        build = new StringBuilder();
+    
+                        //clear the StringBuilder for the next iteration
+                        build.setLength(0);
                     }
                 }
                 bufferedWriter.newLine();
             }
-            
+            scan.close();
             bufferedWriter.close();
             fileWriter.close();
-            scan.close();
-            System.out.println(decodedFilePath);
             return "File Successfully Decoded";
         }
         catch(IOException e)
         {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return "Encoding File Error";
         }
     }
     
     /**
-     * Form a HuffmanTree based on respective character frequencies
+     * Form a HuffmanTree based on respective character frequencies in the input file
      *
      * @param filePath the file to be queried
      * @return the Huffman Tree which represents characters in the file at the input file path
@@ -144,7 +164,7 @@ public class HuffmanCompressor
      * Creates a HuffmanTree of HuffmanNodes given a sorted list of HuffmanNodes
      *
      * @param heap the array to be converted to a tree
-     * @return the HuffmanTree used to represent
+     * @return the HuffmanTree used to represent the character codes
      */
     private static HuffmanTree makeTree(ArrayList<HuffmanNode> heap)
     {

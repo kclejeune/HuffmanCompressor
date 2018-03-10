@@ -1,8 +1,14 @@
 import java.util.Map;
 
+/**
+ * a node of a Huffman Tree - all nodes contain a frequency, leaf nodes will contain a character
+ */
 public class HuffmanNode implements Comparable<HuffmanNode>
 {
     private final Character inChar;
+    private final Integer frequency;
+    private final HuffmanNode rightChild;
+    private final HuffmanNode leftChild;
     
     /**
      * Constructor to initialize leaf nodes from HashMap entries
@@ -30,10 +36,6 @@ public class HuffmanNode implements Comparable<HuffmanNode>
         this.leftChild = leftChild;
         this.rightChild = rightChild;
     }
-    
-    private final Integer frequency;
-    private final HuffmanNode rightChild;
-    private final HuffmanNode leftChild;
     
     /**
      * Determine whether the node has children
@@ -79,12 +81,13 @@ public class HuffmanNode implements Comparable<HuffmanNode>
      * Merge two nodes into one - combines the frequencies of two nodes into a new node, where the two nodes
      * become the child nodes of the new root node
      *
-     * @param left
-     * @param right
-     * @return
+     * @param left  the lesser frequency of the nodes to be merged
+     * @param right the greater frequency of the nodes to be merged
+     * @return the combined node
      */
     public static HuffmanNode mergeNodes(HuffmanNode left, HuffmanNode right)
     {
+        //merge left and right node frequencies, merged nodes become children
         return new HuffmanNode((left.getFrequency() + right.getFrequency()), left, right);
     }
     

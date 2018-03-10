@@ -67,7 +67,8 @@ public class HuffmanTree
     {
         //create encoding table using HashMap for O(1) access and insertion
         HashMap<Character, String> encodingTable = new HashMap<>();
-        
+    
+        //entry point into the recursive method
         toEncodingTable(encodingTable, getRoot(), "");
         
         return encodingTable;
@@ -90,6 +91,8 @@ public class HuffmanTree
             }
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+    
+            //write the formatted encodings to the file
             for(int i = 0; i < encodingList.size(); i++)
             {
                 bufferedWriter.write(encodingList.get(i));
@@ -101,7 +104,7 @@ public class HuffmanTree
         }
         catch(IOException e)
         {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -126,6 +129,7 @@ public class HuffmanTree
             //map the character to its respective encoding
             encodingTable.put(root.getInChar(), encoding);
     
+            //add string to the encoding list to be written to a file later if necessary
             encodingList.add(String.format("%s : %d : %s%n", root.getInChar(), root.getFrequency(), encoding));
         }
         else
