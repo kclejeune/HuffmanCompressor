@@ -1,20 +1,30 @@
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
 /**
- * A special case of a HuffmanNode when the Node is at the root of the tree
+ * A special case of a HuffmanNode when the Node the root of a Huffman tree
  */
 public class HuffmanTree
 {
+    //the root of the HuffmanTree
     private final HuffmanNode root;
+    
+    private HashMap<Character, String> encodingTable;
+    private ArrayList<String> encodingList;
     
     /**
      * Create a HuffmanTree based on the tree root
      *
-     * @param root
+     * @param root the root of the tree
      */
     public HuffmanTree(HuffmanNode root)
     {
         this.root = root;
+    }
+    
+    public HashMap<Character, String> getEncodingTable()
+    {
+        return encodingTable;
     }
     
     /**
@@ -34,11 +44,34 @@ public class HuffmanTree
      */
     public HashMap<Character, String> toEncodingTable()
     {
+        //create encoding table using HashMap for O(1) access and insertion
         HashMap<Character, String> encodingTable = new HashMap<>();
         
         toEncodingTable(encodingTable, getRoot(), "");
         
         return encodingTable;
+    }
+    
+    public boolean encodingTableToFile(String filePath)
+    {
+        try
+        {
+            File file = new File(filePath);
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for(String anEncodingList : encodingList)
+            {
+                bufferedWriter.write(anEncodingList);
+                bufferedWriter.newLine();
+            }
+            
+            return true;
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
     
     /**
@@ -60,6 +93,7 @@ public class HuffmanTree
         {
             //map the character to its respective encoding
             encodingTable.put(root.getInChar(), encoding);
+            encodingList.add(String.format("%s : %d : %s%n", root.getInChar(), root.getFrequency(), encoding));
         }
         else
         {

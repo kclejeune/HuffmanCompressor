@@ -5,7 +5,7 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     private final Character inChar;
     
     /**
-     * Special constructor to parse HuffmanNodes from LinkedHashMap entries
+     * Constructor to initialize leaf nodes from HashMap entries
      *
      * @param entry an entry from a HashMap to be parsed
      */
@@ -17,19 +17,17 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     }
     
     /**
-     * Standard constructor to initialize values
+     * Constructor to initialize inner nodes - only leaf nodes contain character values, so inChar = null by default
      *
-     * @param inChar     the character stored in this node
      * @param frequency  the frequency of the character in a given file
      * @param leftChild  the left child of this node
      * @param rightChild the right child of this node
      */
-    public HuffmanNode(Character inChar, Integer frequency, HuffmanNode leftChild, HuffmanNode rightChild)
+    public HuffmanNode(Integer frequency, HuffmanNode leftChild, HuffmanNode rightChild)
     {
-        this.inChar = inChar;
+        this.inChar = null;
         this.frequency = frequency;
         this.leftChild = leftChild;
-        
         this.rightChild = rightChild;
     }
     
@@ -87,7 +85,7 @@ public class HuffmanNode implements Comparable<HuffmanNode>
      */
     public static HuffmanNode mergeNodes(HuffmanNode left, HuffmanNode right)
     {
-        return new HuffmanNode(null, (left.getFrequency() + right.getFrequency()), left, right);
+        return new HuffmanNode((left.getFrequency() + right.getFrequency()), left, right);
     }
     
     /**
@@ -127,19 +125,5 @@ public class HuffmanNode implements Comparable<HuffmanNode>
     public String toString()
     {
         return "[" + getInChar() + " = " + getFrequency() + "]";
-    }
-    
-    /**
-     * Determine whether this node is equivalent to an input
-     *
-     * @param obj the object to be compared
-     * @return whether the object is a HuffmanNode and the frequencies and characters are equivalent
-     */
-    @Override
-    public boolean equals(Object obj)
-    {
-        return obj instanceof HuffmanNode &&
-                ((HuffmanNode) obj).getFrequency().equals(getFrequency()) && ((HuffmanNode) obj).getInChar().equals
-                (getInChar());
     }
 }

@@ -9,11 +9,19 @@ public class HuffmanCompressor
         String encodingFile = args[1];
         String outputFile = args[2];
     
-        huffmanEncoder(inputFile, encodingFile, outputFile);
-    
-        huffmanDecoder(outputFile, encodingFile, "");
-        
-        
+        String gadsby = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Gadsby.txt";
+        String dictionary = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Dictionary_rev.txt";
+        String gadsbySelfOut = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
+                "/GadsbySelfCompressed.txt";
+        String gadsbyDictionaryOut = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
+                "/GadsbyDictionaryCompressed.txt";
+        String gadsbySelfDecoded = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
+                "/GadsbySelfDecoded.txt";
+        String gadsbyDictionaryDecoded = "/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
+                "/GadsbyDictionaryDecoded.txt";
+        huffmanEncoder("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Test", "/Users" +
+                "/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Test", "/Users/kennanlejeune/Documents" +
+                "/IdeaProjects/HuffmanCompressor/src/TestEncoded");
     }
     
     /**
@@ -31,7 +39,7 @@ public class HuffmanCompressor
         int compressedNumBits = 0;
         try
         {
-            encodingTable = makeTree(encodingFile).toEncodingTable();
+            encodingTable = makeTree(encodingFile).getEncodingTable();
         }
         catch(IOException e)
         {
@@ -66,17 +74,26 @@ public class HuffmanCompressor
         
         double relativeSize = ((double) compressedNumBits * 100 / originalNumBits);
         System.out.println((100 - relativeSize) + "% savings");
-        System.out.println(relativeSize + "% of Original Size)");
-    
+        System.out.println(relativeSize + "% of Original Size");
+        
         return "Successful Output";
     }
     
+    /**
+     * @param encodedFilePath the path of the file to be decoded
+     * @param encodingFile    the path of the file used for encoding
+     * @param decodedFilePath the path of the file after decoding
+     * @return the status of the file decoding
+     */
     public static String huffmanDecoder(String encodedFilePath, String encodingFile, String decodedFilePath)
     {
         try
         {
             HashMap<String, Character> decodingTable = new HashMap<>();
-            makeTree(encodingFile).toEncodingTable().forEach((key, value) -> decodingTable.put(value, key));
+            for(Map.Entry<Character, String> entry : makeTree(encodingFile).getEncodingTable().entrySet())
+            {
+                decodingTable.put(entry.getValue(), entry.getKey());
+            }
             
             File encodedFile = new File(encodedFilePath);
             Scanner scan = new Scanner(encodedFile);
@@ -124,14 +141,13 @@ public class HuffmanCompressor
     }
     
     /**
-     * Creates a HuffmanTree of HuffmanNodes given
+     * Creates a HuffmanTree of HuffmanNodes given a sorted list of HuffmanNodes
      *
-     * @param heap
-     * @return
+     * @param heap the array to be converted to a tree
+     * @return the HuffmanTree used to represent
      */
     private static HuffmanTree makeTree(ArrayList<HuffmanNode> heap)
     {
-        System.out.println(heap);
         //merge the nodes until only the root node is remaining
         while(heap.size() > 1)
         {
@@ -164,9 +180,9 @@ public class HuffmanCompressor
         while(scan.hasNextLine())
         {
             //convert line to char[] for use with foreach
-            char[] temp = scan.nextLine().toCharArray();
+            char[] line = scan.nextLine().toCharArray();
     
-            for(char element : temp)
+            for(char element : line)
             {
                 //add 1 to the key if this is the first occurrence of the character
                 if(!frequencyTable.containsKey(element))
