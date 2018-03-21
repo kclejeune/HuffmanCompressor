@@ -1,0 +1,17 @@
+Kennan LeJeune - kcl60
+
+Gadsby encoded using the dictionary (taken from console output):
+38.124236815495664% savings
+61.875763184504336% of Original Size
+
+Gadsby encoded using itself (taken from console output):
+42.28387664489222% savings
+57.71612335510778% of Original Size
+
+Gadsby can be compressed more when using its own encoding
+because it does not contain the letter e, so standard english character frequencies
+cannot approximate Gadsby as accurately; e is one of the
+most common characters in the dictionary, and as such it is a wasted character code.
+By encoding Gadsby using itself, we can create a more accurate frequency approximation
+of the character values, and therefore create a more optimal set of compression
+codes to ensure that the shortest encodings are for the most frequent characters.

@@ -44,6 +44,8 @@ public class HuffmanCompressor
         HashMap<Character, String> encodingTable;
         int originalNumBits = 0;
         int compressedNumBits = 0;
+    
+        //get the encoding table or return an encoding error
         try
         {
             encodingTable = makeTree(encodingFile).getEncodingTable();
@@ -53,34 +55,34 @@ public class HuffmanCompressor
             return "Encoding Error";
         }
     
+        //write to the encoding file or return input file error
         try
         {
-            Scanner scan = new Scanner(new File(inputFile));
+            FileReader fileReader = new FileReader(inputFile);
             FileWriter fileWriter = new FileWriter(outputFile);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            while(scan.hasNextLine())
+            int charValue = fileReader.read();
+    
+            //repeat until the end of the input file stream
+            while(charValue != -1)
             {
-                String nextLine = scan.nextLine();
-                for(Character c : nextLine.toCharArray())
+                //prevent NullPointerException in the instance of a lossy encoding file
+                //will not affect lossless encoded files
+                if(encodingTable.containsKey((char) charValue))
                 {
-                    //prevent NullPointerException in the instance of a lossy encoding file
-                    //will not affect lossless encoded files
-                    if(encodingTable.containsKey(c))
-                    {
-                        //write the character's corresponding Huffman Code in place of the character
-                        bufferedWriter.write(encodingTable.get(c));
-    
-                        //num bits of each compressed character value
-                        compressedNumBits += encodingTable.get(c).length();
-    
-                        //original characters all 8 bits
-                        originalNumBits += 8;
-                    }
+                    //write the character's corresponding Huffman Code in place of the character
+                    fileWriter.write(encodingTable.get((char) charValue));
+            
+                    //num bits of each compressed character value
+                    compressedNumBits += encodingTable.get((char) charValue).length();
+            
+                    //original characters all 8 bits
+                    originalNumBits += 8;
                 }
-                bufferedWriter.newLine();
+        
+                charValue = fileReader.read();
             }
-            scan.close();
-            bufferedWriter.close();
+    
+            fileReader.close();
             fileWriter.close();
         }
         catch(IOException e)
@@ -98,6 +100,7 @@ public class HuffmanCompressor
     
     /**
      * Decodes a Huffman Compressed file to a user specified output path using the compressed file and the encoded file
+     * Lossless file decoding will result in equivalent md5 file hashes
      *
      * @param encodedFilePath the path of the file to be decoded
      * @param encodingFile    the path of the file used for encoding
@@ -106,38 +109,38 @@ public class HuffmanCompressor
      */
     public static String huffmanDecoder(String encodedFilePath, String encodingFile, String decodedFilePath)
     {
+    
+        //decode the file to the decodedFilePath or return an encoding file error
         try
         {
             HashMap<String, Character> decodingTable = makeTree(encodingFile).getDecodingTable();
-            
-            File encodedFile = new File(encodedFilePath);
-            Scanner scan = new Scanner(encodedFile);
+    
+            FileReader fileReader = new FileReader(encodedFilePath);
+            StringBuilder build = new StringBuilder();
             FileWriter fileWriter = new FileWriter(decodedFilePath);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-    
+            int charValue = fileReader.read();
+            
             //traverse the entire file
-            while(scan.hasNextLine())
+            while(charValue != -1)
             {
-                StringBuilder build = new StringBuilder();
-                for(Character c : scan.nextLine().toCharArray())
+                //append values until the prefix matches a valid encoding
+                build.append((char) charValue);
+        
+                //once the prefix matches
+                if(decodingTable.containsKey(build.toString()))
                 {
-                    //append values until the prefix matches a valid encoding
-                    build.append(c);
-    
-                    //once the prefix matches
-                    if(decodingTable.containsKey(build.toString()))
-                    {
-                        //write the decoded value to the output file
-                        bufferedWriter.write(decodingTable.get(build.toString()));
-    
-                        //clear the StringBuilder for the next iteration
-                        build.setLength(0);
-                    }
+                    //write the decoded value to the output file
+                    fileWriter.write(decodingTable.get(build.toString()));
+            
+                    //clear the StringBuilder for the next iteration
+                    build.setLength(0);
                 }
-                bufferedWriter.newLine();
+        
+                //get next character in the stream
+                charValue = fileReader.read();
             }
-            scan.close();
-            bufferedWriter.close();
+    
+            fileReader.close();
             fileWriter.close();
             return "File Successfully Decoded";
         }
@@ -157,7 +160,7 @@ public class HuffmanCompressor
      */
     public static HuffmanTree makeTree(String filePath) throws IOException
     {
-        return makeTree(toHuffmanHeap(filePath));
+        return makeTree(toHuffmanHeap(new FileReader(filePath)));
     }
     
     /**
@@ -172,6 +175,8 @@ public class HuffmanCompressor
         while(heap.size() > 1)
         {
             heap.add(0, HuffmanNode.mergeNodes(heap.remove(0), heap.remove(0)));
+    
+            //sort after each iteration to ensure the 0th and 1st nodes are always the left and right children
             Collections.sort(heap);
         }
         
@@ -181,50 +186,44 @@ public class HuffmanCompressor
     /**
      * Parses a given input file to a sorted ArrayList of HuffmanNodes
      *
-     * @param filePath the file to be converted to Huffman frequencies
+     * @param reader the InputStream to be converted to Huffman frequencies
      * @return the ArrayList of HuffmanNodes containing Characters and their respective frequencies in the file
      * @throws IOException if the file is nonexistent
      */
-    private static ArrayList<HuffmanNode> toHuffmanHeap(String filePath) throws IOException
+    private static ArrayList<HuffmanNode> toHuffmanHeap(Reader reader) throws IOException
     {
         //HashMap has amortized O(1) access and insertion - useful for frequency tables
         HashMap<Character, Integer> frequencyTable = new HashMap<>();
     
-        //the file to be scanned
-        File file = new File(filePath);
-    
-        //the file scanner
-        Scanner scan = new Scanner(file);
-        
+        int charValue = reader.read();
         //create a frequency table of characters using a HashMap
-        while(scan.hasNextLine())
+        while(charValue != -1)
         {
-            //convert line to char[] for use with foreach
-            char[] line = scan.nextLine().toCharArray();
-    
-            for(char element : line)
+            //add 1 to the key if this is the first occurrence of the character
+            if(!frequencyTable.containsKey((char) charValue))
             {
-                //add 1 to the key if this is the first occurrence of the character
-                if(!frequencyTable.containsKey(element))
-                {
-                    frequencyTable.put(element, 1);
-                }
-                else
-                {
-                    //otherwise add one to the existing value
-                    frequencyTable.put(element, frequencyTable.get(element) + 1);
-                }
+                frequencyTable.put((char) charValue, 1);
             }
+            else
+            {
+                //otherwise add one to the existing value
+                frequencyTable.put((char) charValue, frequencyTable.get((char) charValue) + 1);
+            }
+        
+            charValue = reader.read();
         }
+        
         //close scanner to prevent memory leak
-        scan.close();
-    
+        reader.close();
+        
         //create an ArrayList of HuffmanNodes, will be sorted to act as a heap
-        //beneficial due to quick element access
+        //beneficial due to quick element access and minimal resizing
         ArrayList<HuffmanNode> huffmanHeap = new ArrayList<>();
     
         //using an alternate HuffmanNode constructor, insert the frequency entries into the huffmanHeap
-        for(Map.Entry<Character, Integer> entry : frequencyTable.entrySet())
+        for(
+                Map.Entry<Character, Integer> entry : frequencyTable.entrySet())
+        
         {
             huffmanHeap.add(new HuffmanNode(entry));
         }

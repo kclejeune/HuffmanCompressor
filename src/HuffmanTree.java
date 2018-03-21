@@ -85,17 +85,14 @@ public class HuffmanTree
         try
         {
             File file = new File(filePath);
-            if(!file.exists())
-            {
-                file.createNewFile();
-            }
+    
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
     
             //write the formatted encodings to the file
-            for(int i = 0; i < encodingList.size(); i++)
+            for(String str : encodingList)
             {
-                bufferedWriter.write(encodingList.get(i));
+                bufferedWriter.write(str);
             }
             bufferedWriter.close();
             fileWriter.close();
