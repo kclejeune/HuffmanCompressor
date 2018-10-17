@@ -9,19 +9,18 @@ public class HuffmanCompressor
         String encodingFile = args[1];
         String outputFile = args[2];
         
-        /*
         //encoding files generated with the following command:
         try
         {
-            makeTree("../files/Gadsby.txt).encodingTableToFile("../files/GadsbyEncoding.txt");
+            makeTree("../files/Gadsby.txt").encodingTableToFile("../files/GadsbyEncoding.txt");
             makeTree("../files/Dictionary_rev.txt").encodingTableToFile("../files/DictionaryEncoding.txt");
         }
         catch(IOException e)
         {
             System.out.println(e.getMessage());
         }
-        */
-    
+        
+        //print the results
         System.out.println(huffmanEncoder(inputFile, encodingFile, outputFile));
     }
     
