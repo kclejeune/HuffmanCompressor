@@ -12,8 +12,8 @@ public class HuffmanCompressor
         //encoding files generated with the following command:
         try
         {
-            makeTree("../files/Gadsby.txt").encodingTableToFile("../files/GadsbyEncoding.txt");
-            makeTree("../files/Dictionary_rev.txt").encodingTableToFile("../files/DictionaryEncoding.txt");
+            makeTree("files/Gadsby.txt").encodingTableToFile("out/GadsbyEncoding.txt");
+            makeTree("files/Dictionary_rev.txt").encodingTableToFile("out/DictionaryEncoding.txt");
         }
         catch(IOException e)
         {
