@@ -5,6 +5,7 @@ public class HuffmanCompressor
 {
     public static void main(String[] args)
     {
+        
         String inputFile = args[0];
         String encodingFile = args[1];
         String outputFile = args[2];
@@ -12,8 +13,7 @@ public class HuffmanCompressor
         //encoding files generated with the following command:
         try
         {
-            makeTree("files/Gadsby.txt").encodingTableToFile("out/GadsbyEncoding.txt");
-            makeTree("files/Dictionary_rev.txt").encodingTableToFile("out/DictionaryEncoding.txt");
+            makeTree(encodingFile).encodingTableToFile("out/EncodingFile.txt");
         }
         catch(IOException e)
         {
