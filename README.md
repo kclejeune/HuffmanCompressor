@@ -15,6 +15,6 @@ In its present form, the project will create an encoded file based on an input f
 
 To run it, use:
 
-`java HuffmanCompressor inputFile encodingFile outputFile`
+`java src/HuffmanCompressor inputFile encodingFile outputFile`
 
 Note: In general, the input file and encoding file will be the same.
