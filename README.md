@@ -9,7 +9,10 @@ Huffman coding uses a specific method for choosing the representation for each s
 
 ## Getting Started
 
-In its present form, the project will create an encoded file based on an input file and encoding file.  
+In its present form, the project will create an encoded file based on an input file and encoding file.  You can build all necessary files with:
+
+`javac /src/*.java`
+
 To run it, use:
 
 `java HuffmanCompressor inputFile encodingFile outputFile`
