@@ -13,14 +13,8 @@ public class HuffmanCompressor
         //encoding files generated with the following command:
         try
         {
-            makeTree("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Gadsby" +
-                    ".txt").encodingTableToFile
-                    ("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
-                            "/GadsbyEncoding.txt");
-            makeTree("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src/Dictionary_rev" +
-                    ".txt").encodingTableToFile
-                    ("/Users/kennanlejeune/Documents/IdeaProjects/HuffmanCompressor/src" +
-                            "/DictionaryEncoding.txt");
+            makeTree("../files/Gadsby.txt).encodingTableToFile("../files/GadsbyEncoding.txt");
+            makeTree("../files/Dictionary_rev.txt").encodingTableToFile("../files/DictionaryEncoding.txt");
         }
         catch(IOException e)
         {

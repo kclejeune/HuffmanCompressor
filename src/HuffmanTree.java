@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-//TODO - Method commenting
 
 /**
  * A special case of a HuffmanNode when the Node the root of a Huffman tree
